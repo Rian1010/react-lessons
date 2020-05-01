@@ -5,65 +5,131 @@ import '../App.css';
 import * as pi from './Math';
 import Alphabet from './Koreanpedia';
 import cars from './List';
+import TodoItem from './TodoItem'
 
 function App() {
-  const [fullName, setFullName] = useState({
-    fName: "",
-    lName: "",
-  })
-  const [isMousedOver, setBgColur] = useState(false);
+  const [inputText, setInputText] = useState("");
+  const [items, setItems] = useState([]);
 
-  function handleChange(e) {
-    // const newValue = e.target.value;
-    // const inputName = e.target.name;
-    const {name, value} = e.target
-
-    setFullName(prevValue => {
-      if (name === "fName") {
-        return{
-          fName: value,
-          lName: prevValue.lName,
-        }
-      } else if (name === "lName") {
-        return{
-          fName: prevValue.fName,
-          lName: value,
-        }
-      }
-    });
+  function handleChange(event) {
+    const newValue = event.target.value;
+    setInputText(newValue);
   }
 
-  function MousedOver() {
-    setBgColur(true)
+  function addItem(event) {
+    setItems(prevText => [...prevText, inputText]);
+    event.preventDefault();
+  }
+
+  function deleteItem(id) {
+    setItems(prevItems => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
   }
 
   return (
     <div>
-      <h1>Hello {fullName.fName} {fullName.lName}</h1>
-      <form>
-        <input 
-          name="fName"
-          onChange={handleChange}
-          placeholder="First Name"
-          value={fullName.fName}
-        />
-        <input 
-          name="lName"
-          onChange={handleChange}
-          placeholder="Last Name"
-          value={fullName.lName}
-        />
-        <button
-          type="submit"
-          style={{ backgroundColor: isMousedOver ? "black" : "white"}}
-          onMouseOver={MousedOver}
-        >
-          Submit
-        </button>
-      </form>
+      <h1>To Do List</h1>
+      <input 
+        onChange={handleChange}
+        type="text"
+        value={inputText}
+      />
+      <button type="submit" onClick={addItem}><span>Add Item</span></button>
+      <ul>
+          {items.map((item, index) => <TodoItem key={index} id={index} text={item} onChecked={deleteItem}/>)}
+      </ul>
     </div>
   )
 }
+
+// function App() {
+//   const [fullName, setFullName] = useState({
+//     fName: "",
+//     lName: "",
+//     email: "",
+//   })
+//   const [isMousedOver, setBgColur] = useState(false);
+
+//   function handleChange(event) {
+//     // const value = e.target.value;
+//     // const key = e.target.name;
+//     const {name, value} = event.target
+
+//     setFullName(prevValue => {
+//       return {
+//         ...prevValue,
+//         [name]: value,
+//       }
+//       // Replace the code below with the code above
+      
+//       // if (name === "fName") {
+//       //   return {
+//       //     fName: value,
+//       //     lName: prevValue.lName,
+//       //     email: prevValue.email,
+//       //   }
+//       // } else if (name === "lName") {
+//       //   return {
+//       //     fName: prevValue.fName,
+//       //     lName: value,
+//       //     email: prevValue.email,
+//       //   }
+//       // } else if (name === "email") {
+//       //   return {
+//       //     fname: prevValue.fName,
+//       //     lName: prevValue.lName,
+//       //     email: value,
+//       //   }
+//       // }
+//     });
+//   }
+
+//   function MousedOver() {
+//     setBgColur(true)
+//   }
+
+//   function MousedOut() {
+//     setBgColur(false)
+//   }
+
+//   return (
+//     <div>
+//       <h1>Hello {fullName.fName} {fullName.lName}</h1>
+//       <h2>Email: {fullName.email}</h2>
+//       <form>
+//         <input 
+//           name="fName"
+//           onChange={handleChange}
+//           placeholder="First Name"
+//           value={fullName.fName}
+//         />
+//         <input 
+//           name="lName"
+//           onChange={handleChange}
+//           placeholder="Last Name"
+//           value={fullName.lName}
+//         />
+//         <input 
+//           name="email"
+//           onChange={handleChange}
+//           placeholder="Email Address"
+//           value={fullName.email}
+//         />
+//         <button
+//           type="submit"
+//           style={{ backgroundColor: isMousedOver ? "skyblue" : "white"}}
+//           onMouseOver={MousedOver}
+//           onMouseOut={MousedOut}
+//         >
+//           Submit
+//         </button>
+//       </form>
+//     </div>
+//   )
+// }
 
 // --------------------------------------------------- Part 5 Event Handling and Forms --------------------------------------------------- //
 
